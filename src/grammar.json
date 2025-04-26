@@ -8781,12 +8781,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "FIELD",
-              "name": "jml_contract",
-              "content": {
-                "type": "SYMBOL",
-                "name": "jml_contract"
-              }
+              "type": "SYMBOL",
+              "name": "jml_contract"
             },
             {
               "type": "BLANK"
@@ -8846,20 +8842,12 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "FIELD",
-              "name": "jml_requires",
-              "content": {
-                "type": "SYMBOL",
-                "name": "jml_requires"
-              }
+              "type": "SYMBOL",
+              "name": "jml_requires"
             },
             {
-              "type": "FIELD",
-              "name": "jml_ensures",
-              "content": {
-                "type": "SYMBOL",
-                "name": "jml_ensures"
-              }
+              "type": "SYMBOL",
+              "name": "jml_ensures"
             }
           ]
         },
@@ -8886,8 +8874,12 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "jml_expression"
+          "type": "FIELD",
+          "name": "condition",
+          "content": {
+            "type": "SYMBOL",
+            "name": "jml_expression"
+          }
         }
       ]
     },
@@ -8908,8 +8900,12 @@
           ]
         },
         {
-          "type": "SYMBOL",
-          "name": "jml_expression"
+          "type": "FIELD",
+          "name": "condition",
+          "content": {
+            "type": "SYMBOL",
+            "name": "jml_expression"
+          }
         }
       ]
     },

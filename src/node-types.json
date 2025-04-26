@@ -2526,42 +2526,36 @@
   {
     "type": "jml_contract",
     "named": true,
-    "fields": {
-      "jml_ensures": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "jml_ensures",
-            "named": true
-          }
-        ]
-      },
-      "jml_requires": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "jml_requires",
-            "named": true
-          }
-        ]
-      }
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_ensures",
+          "named": true
+        },
+        {
+          "type": "jml_requires",
+          "named": true
+        }
+      ]
     }
   },
   {
     "type": "jml_ensures",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "jml_expression",
-          "named": true
-        }
-      ]
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2706,16 +2700,17 @@
   {
     "type": "jml_requires",
     "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "jml_expression",
-          "named": true
-        }
-      ]
+    "fields": {
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -2960,16 +2955,6 @@
           }
         ]
       },
-      "jml_contract": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "jml_contract",
-            "named": true
-          }
-        ]
-      },
       "name": {
         "multiple": false,
         "required": true,
@@ -3017,6 +3002,10 @@
       "types": [
         {
           "type": "annotation",
+          "named": true
+        },
+        {
+          "type": "jml_contract",
           "named": true
         },
         {

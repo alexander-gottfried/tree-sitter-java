@@ -1385,7 +1385,7 @@ module.exports = grammar({
     ),
 
     method_declaration: $ => seq(
-      optional(field('jml_contract', $.jml_contract)),
+      optional($.jml_contract),
       optional($.modifiers),
       $._method_header,
       choice(field('body', $.block), ';'),
@@ -1395,19 +1395,19 @@ module.exports = grammar({
 
     _jml_contract_clause: $ => jml_comment(
       choice(
-        field('jml_requires', $.jml_requires),
-        field('jml_ensures', $.jml_ensures),
+        $.jml_requires,
+        $.jml_ensures,
       ),
     ),
 
     jml_requires: $ => seq(
       choice('requires', 'pre'),
-      $.jml_expression,
+      field('condition', $.jml_expression),
     ),
 
     jml_ensures: $ => seq(
       choice('ensures', 'post'),
-      $.jml_expression,
+      field('condition', $.jml_expression),
     ),
 
     compact_constructor_declaration: $ => seq(
