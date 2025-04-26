@@ -324,6 +324,10 @@
         "named": true
       },
       {
+        "type": "jml_statement",
+        "named": true
+      },
+      {
         "type": "labeled_statement",
         "named": true
       },
@@ -2366,6 +2370,460 @@
     }
   },
   {
+    "type": "jml_array_access",
+    "named": true,
+    "fields": {
+      "array": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_primary_expression",
+            "named": true
+          }
+        ]
+      },
+      "index": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "jml_binary_expression",
+    "named": true,
+    "fields": {
+      "left": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!=",
+            "named": false
+          },
+          {
+            "type": "%",
+            "named": false
+          },
+          {
+            "type": "&",
+            "named": false
+          },
+          {
+            "type": "&&",
+            "named": false
+          },
+          {
+            "type": "*",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "/",
+            "named": false
+          },
+          {
+            "type": "<",
+            "named": false
+          },
+          {
+            "type": "<:",
+            "named": false
+          },
+          {
+            "type": "<<",
+            "named": false
+          },
+          {
+            "type": "<=",
+            "named": false
+          },
+          {
+            "type": "<=!=>",
+            "named": false
+          },
+          {
+            "type": "<==",
+            "named": false
+          },
+          {
+            "type": "<==>",
+            "named": false
+          },
+          {
+            "type": "==",
+            "named": false
+          },
+          {
+            "type": "==>",
+            "named": false
+          },
+          {
+            "type": ">",
+            "named": false
+          },
+          {
+            "type": ">=",
+            "named": false
+          },
+          {
+            "type": ">>",
+            "named": false
+          },
+          {
+            "type": ">>>",
+            "named": false
+          },
+          {
+            "type": "^",
+            "named": false
+          },
+          {
+            "type": "|",
+            "named": false
+          },
+          {
+            "type": "||",
+            "named": false
+          }
+        ]
+      },
+      "right": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "jml_contract",
+    "named": true,
+    "fields": {
+      "jml_ensures": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "jml_ensures",
+            "named": true
+          }
+        ]
+      },
+      "jml_requires": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "jml_requires",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "jml_ensures",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_binary_expression",
+          "named": true
+        },
+        {
+          "type": "jml_primary_expression",
+          "named": true
+        },
+        {
+          "type": "jml_ternary_expression",
+          "named": true
+        },
+        {
+          "type": "jml_unary_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_ghost_declaration",
+    "named": true,
+    "fields": {
+      "final": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "final",
+            "named": false
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "_unannotated_type",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "variable_declarator",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_invariant",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_old_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_parenthesized_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_primary_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "_literal",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "jml_array_access",
+          "named": true
+        },
+        {
+          "type": "jml_old_expression",
+          "named": true
+        },
+        {
+          "type": "jml_parenthesized_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_requires",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_set_statement",
+    "named": true,
+    "fields": {
+      "declarator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "variable_declarator",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "jml_statement",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "jml_set_statement",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "jml_ternary_expression",
+    "named": true,
+    "fields": {
+      "alternative": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      },
+      "condition": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      },
+      "consequence": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "jml_unary_expression",
+    "named": true,
+    "fields": {
+      "operand": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "jml_expression",
+            "named": true
+          }
+        ]
+      },
+      "operator": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "!",
+            "named": false
+          },
+          {
+            "type": "+",
+            "named": false
+          },
+          {
+            "type": "-",
+            "named": false
+          },
+          {
+            "type": "~",
+            "named": false
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "labeled_statement",
     "named": true,
     "fields": {},
@@ -2498,6 +2956,16 @@
         "types": [
           {
             "type": "dimensions",
+            "named": true
+          }
+        ]
+      },
+      "jml_contract": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "jml_contract",
             "named": true
           }
         ]
@@ -2913,6 +3381,14 @@
       "multiple": true,
       "required": false,
       "types": [
+        {
+          "type": "jml_ghost_declaration",
+          "named": true
+        },
+        {
+          "type": "jml_invariant",
+          "named": true
+        },
         {
           "type": "method_declaration",
           "named": true
@@ -4140,6 +4616,10 @@
     "named": false
   },
   {
+    "type": "//@",
+    "named": false
+  },
+  {
     "type": "/=",
     "named": false
   },
@@ -4156,7 +4636,15 @@
     "named": false
   },
   {
+    "type": ";\n",
+    "named": false
+  },
+  {
     "type": "<",
+    "named": false
+  },
+  {
+    "type": "<:",
     "named": false
   },
   {
@@ -4172,11 +4660,27 @@
     "named": false
   },
   {
+    "type": "<=!=>",
+    "named": false
+  },
+  {
+    "type": "<==",
+    "named": false
+  },
+  {
+    "type": "<==>",
+    "named": false
+  },
+  {
     "type": "=",
     "named": false
   },
   {
     "type": "==",
+    "named": false
+  },
+  {
+    "type": "==>",
     "named": false
   },
   {
@@ -4217,6 +4721,10 @@
   },
   {
     "type": "[",
+    "named": false
+  },
+  {
+    "type": "\\old(",
     "named": false
   },
   {
@@ -4312,6 +4820,10 @@
     "named": false
   },
   {
+    "type": "ensures",
+    "named": false
+  },
+  {
     "type": "enum",
     "named": false
   },
@@ -4348,6 +4860,10 @@
     "named": false
   },
   {
+    "type": "ghost",
+    "named": false
+  },
+  {
     "type": "hex_floating_point_literal",
     "named": true
   },
@@ -4381,6 +4897,10 @@
   },
   {
     "type": "interface",
+    "named": false
+  },
+  {
+    "type": "invariant",
     "named": false
   },
   {
@@ -4432,6 +4952,14 @@
     "named": false
   },
   {
+    "type": "post",
+    "named": false
+  },
+  {
+    "type": "pre",
+    "named": false
+  },
+  {
     "type": "private",
     "named": false
   },
@@ -4461,6 +4989,10 @@
   },
   {
     "type": "sealed",
+    "named": false
+  },
+  {
+    "type": "set",
     "named": false
   },
   {

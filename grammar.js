@@ -15,6 +15,7 @@ const HEX_DIGITS = token(sep1(/[A-Fa-f0-9]+/, '_'));
 
 /* eslint-disable no-multi-spaces */
 
+//TODO i changed this
 const PREC = {
   // https://introcs.cs.princeton.edu/java/11precedence/
   COMMENT: 0,         // //  /*  */
@@ -22,24 +23,27 @@ const PREC = {
   DECL: 2,
   ELEMENT_VAL: 2,
   TERNARY: 3,         // ?:
-  OR: 4,              // ||
-  AND: 5,             // &&
-  BIT_OR: 6,          // |
-  BIT_XOR: 7,         // ^
-  BIT_AND: 8,         // &
-  EQUALITY: 9,        // ==  !=
-  GENERIC: 10,
-  REL: 10,            // <  <=  >  >=  instanceof
-  SHIFT: 11,          // <<  >>  >>>
-  ADD: 12,            // +  -
-  MULT: 13,           // *  /  %
-  CAST: 14,           // (Type)
-  OBJ_INST: 14,       // new
-  UNARY: 15,          // ++a  --a  a++  a--  +  -  !  ~
-  ARRAY: 16,          // [Index]
-  OBJ_ACCESS: 16,     // .
-  PARENS: 16,         // (Expression)
-  CLASS_LITERAL: 17,  // .
+  JML_LOG_EQ: 4,          // <==> <=!=>
+  JML_IMPLY: 5,       // ==> <==
+  OR: 6,              // ||
+  AND: 7,             // &&
+  BIT_OR: 8,          // |
+  BIT_XOR: 9,         // ^
+  BIT_AND: 10,         // &
+  EQUALITY: 11,        // ==  !=
+  GENERIC: 12,
+  REL: 12,            // <  <=  >  >=  instanceof  <:
+  SHIFT: 13,          // <<  >>  >>>
+  ADD: 14,            // +  -
+  MULT: 15,           // *  /  %
+  CAST: 16,           // (Type)
+  OBJ_INST: 16,       // new
+  UNARY: 17,          // ++a  --a  a++  a--  +  -  !  ~
+  ARRAY: 18,          // [Index]
+  OBJ_ACCESS: 18,     // .
+  PARENS: 18,         // (Expression)
+  JML_QUANTS: 18,     // \forall \exists \max \min \num_of \product \sum
+  CLASS_LITERAL: 19,  // .
 };
 
 /* eslint-enable no-multi-spaces */
@@ -87,6 +91,8 @@ module.exports = grammar({
     [$.inferred_parameters, $.primary_expression],
     [$.argument_list, $.record_pattern_body],
     [$.yield_statement, $._reserved_identifier],
+    //JML new conflict
+    //[$._jml_contract_clause, $.line_comment],
   ],
 
   word: $ => $.identifier,
@@ -97,6 +103,26 @@ module.exports = grammar({
     _toplevel_statement: $ => choice(
       $.statement,
       $.method_declaration,
+      $._jml_toplevel_statement,
+    ),
+
+    _jml_toplevel_statement: $ => jml_comment(
+      choice(
+        $.jml_invariant,
+        $.jml_ghost_declaration,
+      ),
+    ),
+
+    jml_invariant: $ => seq(
+      'invariant',
+      $.jml_expression,
+    ),
+
+    jml_ghost_declaration: $ => seq(
+      'ghost',
+      optional(field('final', 'final')),
+      field('type', $._unannotated_type),
+      $.variable_declarator,
     ),
 
     // Literals
@@ -238,6 +264,95 @@ module.exports = grammar({
       $.cast_expression,
       $.switch_expression,
     ),
+
+    jml_expression: $ => choice(
+      $.jml_binary_expression,
+      $.jml_primary_expression,
+      $.jml_ternary_expression,
+      $.jml_unary_expression,
+    ),
+
+    jml_binary_expression: $ => choice(
+       ...[
+        ['<==>', PREC.JML_LOG_EQ],
+        ['<=!=>', PREC.JML_LOG_EQ],
+        ['==>', PREC.JML_IMPLY],
+        ['<==', PREC.JML_IMPLY],
+        ['<:', PREC.REL],
+        ['>', PREC.REL],
+        ['<', PREC.REL],
+        ['>=', PREC.REL],
+        ['<=', PREC.REL],
+        ['==', PREC.EQUALITY],
+        ['!=', PREC.EQUALITY],
+        ['&&', PREC.AND],
+        ['||', PREC.OR],
+        ['+', PREC.ADD],
+        ['-', PREC.ADD],
+        ['*', PREC.MULT],
+        ['/', PREC.MULT],
+        ['&', PREC.BIT_AND],
+        ['|', PREC.BIT_OR],
+        ['^', PREC.BIT_XOR],
+        ['%', PREC.MULT],
+        ['<<', PREC.SHIFT],
+        ['>>', PREC.SHIFT],
+        ['>>>', PREC.SHIFT],
+      ].map(([operator, precedence]) =>
+        prec.left(precedence, seq(
+          field('left', $.jml_expression),
+          // @ts-ignore
+          field('operator', operator),
+          field('right', $.jml_expression),
+        )),
+      )
+    ),
+
+    jml_primary_expression: $ => choice(
+      $.jml_old_expression,
+      //$.jml_quantified_expression,
+      //TODO and the rest
+      $._literal,
+      $.identifier,
+      $.jml_parenthesized_expression,
+      $.jml_array_access,
+    ),
+
+    jml_array_access: $ => seq(
+      field('array', $.jml_primary_expression),
+      '[',
+      field('index', $.jml_expression),
+      ']',
+    ),
+
+    jml_parenthesized_expression: $ => seq('(', $.jml_expression, ')'),
+
+    jml_old_expression: $ => seq(
+      '\\old(',
+      $.jml_expression,
+      ')',
+    ),
+
+    jml_ternary_expression: $ => prec.right(PREC.TERNARY, seq(
+      field('condition', $.jml_expression),
+      '?',
+      field('consequence', $.jml_expression),
+      ':',
+      field('alternative', $.jml_expression),
+    )),
+
+    jml_unary_expression: $ => choice(...[
+      ['+', PREC.UNARY],
+      ['-', PREC.UNARY],
+      ['!', PREC.UNARY],
+      ['~', PREC.UNARY],
+    ].map(([operator, precedence]) =>
+      prec.left(precedence, seq(
+        // @ts-ignore
+        field('operator', operator),
+        field('operand', $.jml_expression),
+      )),
+    )),
 
     cast_expression: $ => prec(PREC.CAST, choice(
       seq(
@@ -559,7 +674,20 @@ module.exports = grammar({
       $.throw_statement,
       $.try_statement,
       $.try_with_resources_statement,
+      $.jml_statement,
     ),
+    
+    jml_statement: $ => jml_comment(
+      choice(
+        $.jml_set_statement,
+      ),
+    ),
+
+    jml_set_statement: $ => seq(
+      'set',
+      field('declarator', $.variable_declarator),
+    ),
+
 
     block: $ => seq(
       '{', repeat($.statement), '}',
@@ -1257,9 +1385,29 @@ module.exports = grammar({
     ),
 
     method_declaration: $ => seq(
+      optional(field('jml_contract', $.jml_contract)),
       optional($.modifiers),
       $._method_header,
       choice(field('body', $.block), ';'),
+    ),
+
+    jml_contract: $ => repeat1($._jml_contract_clause),
+
+    _jml_contract_clause: $ => jml_comment(
+      choice(
+        field('jml_requires', $.jml_requires),
+        field('jml_ensures', $.jml_ensures),
+      ),
+    ),
+
+    jml_requires: $ => seq(
+      choice('requires', 'pre'),
+      $.jml_expression,
+    ),
+
+    jml_ensures: $ => seq(
+      choice('ensures', 'post'),
+      $.jml_expression,
     ),
 
     compact_constructor_declaration: $ => seq(
@@ -1289,7 +1437,8 @@ module.exports = grammar({
     // https://docs.oracle.com/javase/specs/jls/se8/html/jls-3.html#jls-IdentifierChars
     identifier: _ => /[\p{XID_Start}_$][\p{XID_Continue}\u00A2_$]*/,
 
-    line_comment: _ => token(prec(PREC.COMMENT, seq('//', /[^\n]*/))),
+    //TODO i changed this
+    line_comment: _ => token(prec(PREC.COMMENT, seq('//', /([^@][^\n]*)?/))),
 
     // http://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment/36328890#36328890
     block_comment: _ => token(prec(PREC.COMMENT,
@@ -1335,4 +1484,15 @@ function commaSep1(rule) {
  */
 function commaSep(rule) {
   return optional(commaSep1(rule));
+}
+
+/**
+ * Wraps a rule in JML comment syntax.
+ *
+ * @param {RuleOrLiteral} rule
+ *
+ * @returns {SeqRule}
+ */
+function jml_comment(rule) {
+  return seq('//@', rule, ';\n');
 }
