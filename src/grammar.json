@@ -9137,6 +9137,8 @@
     "_type",
     "_simple_type",
     "_unannotated_type",
-    "module_directive"
+    "module_directive",
+    "jml_expression",
+    "jml_primary_expression"
   ]
 }

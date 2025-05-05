@@ -67,6 +67,8 @@ module.exports = grammar({
     $._simple_type,
     $._unannotated_type,
     $.module_directive,
+    $.jml_expression,
+    $.jml_primary_expression,
   ],
 
   inline: $ => [

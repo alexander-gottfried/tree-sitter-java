@@ -1746,16 +1746,18 @@ static const TSSymbolMetadata ts_symbol_metadata[] = {
     .supertype = true,
   },
   [sym_jml_expression] = {
-    .visible = true,
+    .visible = false,
     .named = true,
+    .supertype = true,
   },
   [sym_jml_binary_expression] = {
     .visible = true,
     .named = true,
   },
   [sym_jml_primary_expression] = {
-    .visible = true,
+    .visible = false,
     .named = true,
+    .supertype = true,
   },
   [sym_jml_array_access] = {
     .visible = true,
